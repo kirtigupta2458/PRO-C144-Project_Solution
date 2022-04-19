@@ -5,10 +5,9 @@ import {
   StyleSheet,
   Image,
   TouchableOpacity,
-  ImageBackground,
-  ScrollView,
+  ImageBackground
 } from "react-native";
-import { AirbnbRating, Icon } from "react-native-elements";
+import { Icon } from "react-native-elements";
 import { RFValue } from "react-native-responsive-fontsize";
 import axios from "axios";
 import WebView from "react-native-webview";
@@ -18,6 +17,7 @@ export default class HomeScreen extends Component {
     super();
     this.state = {
       articleDetails: {},
+      ngrok_url: "",
     };
   }
 
@@ -25,10 +25,8 @@ export default class HomeScreen extends Component {
     this.getArticle();
   }
 
-
   getArticle = () => {
-    const url =
-      "https://d534-2405-201-8008-e095-91c9-627b-6442-8312.ngrok.io/get-article";
+    const url = this.state.ngrok_url + "/get-article";
     axios
       .get(url)
       .then((response) => {
@@ -41,10 +39,9 @@ export default class HomeScreen extends Component {
   };
 
   likedArticle = () => {
-    const url =
-      "https://d534-2405-201-8008-e095-91c9-627b-6442-8312.ngrok.io/liked-article";
+    const url = this.state.ngrok_url + "/liked-article";
     axios
-      .post(url)
+      .get(url)
       .then((response) => {
         this.getArticle();
       })
@@ -54,10 +51,9 @@ export default class HomeScreen extends Component {
   };
 
   unlikedArticle = () => {
-    const url =
-      "https://d534-2405-201-8008-e095-91c9-627b-6442-8312.ngrok.io/unliked-article";
+    const url = this.state.ngrok_url + "/unliked-article";
     axios
-      .post(url)
+      .get(url)
       .then((response) => {
         this.getArticle();
       })
@@ -66,37 +62,31 @@ export default class HomeScreen extends Component {
       });
   };
 
-
   render() {
     const { articleDetails } = this.state;
-    if (articleDetails.text) {
-      const {  url } = articleDetails;
-
+    const { url } = articleDetails;
+    if (url) {
       return (
         <View style={styles.container}>
           <ImageBackground
             source={require("../assets/bg.png")}
             style={{ flex: 1 }}
           >
-            <ImageBackground
-              source={require("../assets/headerBg.png")}
-              style={styles.headerContainer}
-            >
-              <Text style={styles.headerTitle}>Movie Recommendation</Text>
+            <View style={styles.headerContainer}>
+              <Text style={styles.headerTitle}>Articles to Read</Text>
               <Icon
                 name="chevron-right"
                 type="feather"
                 color={"white"}
-                size= {RFValue(30)}
-                containerStyle={{position:"absolute",right:RFValue(5)}}
+                size={RFValue(30)}
+                containerStyle={{ position: "absolute", right: RFValue(5) }}
                 onPress={() => {
                   this.props.navigation.navigate("Articles");
                 }}
               ></Icon>
-            </ImageBackground>
+            </View>
 
             <View style={styles.subContainer}>
-
               <WebView source={{ uri: url }} />
 
               <View style={styles.iconButtonContainer}>
@@ -112,14 +102,14 @@ export default class HomeScreen extends Component {
                     source={require("../assets/dislike.png")}
                   />
                 </TouchableOpacity>
-             
               </View>
             </View>
           </ImageBackground>
         </View>
       );
+    } else {
+      return <Text>Loading...</Text>;
     }
-    return null;
   }
 }
 
@@ -133,6 +123,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
     flexDirection: "row",
     justifyContent: "flex-end",
+    backgroundColor: "#3D550C",
   },
   headerTitle: {
     color: "#fff",
@@ -140,7 +131,7 @@ const styles = StyleSheet.create({
     fontSize: RFValue(18),
     fontFamily: "monospace",
     textAlign: "center",
-    flex: 1
+    flex: 1,
   },
   subContainer: {
     flex: 0.9,

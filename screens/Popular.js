@@ -3,17 +3,19 @@ import {
   View,
   StyleSheet,
   FlatList,
+  Text,
   ImageBackground
 } from "react-native";
 import axios from "axios";
 import { RFValue } from "react-native-responsive-fontsize";
-import WebView from "react-native-webview";
+import Star from "react-native-star-view";
 
 export default class PopularScreen extends Component {
   constructor(props) {
     super(props);
     this.state = {
       data: [],
+      ngrok_url:""
     };
   }
 
@@ -22,8 +24,7 @@ export default class PopularScreen extends Component {
   }
 
   getData = () => {
-    const url =
-      "https://d534-2405-201-8008-e095-91c9-627b-6442-8312.ngrok.io/popular-articles";
+    const url = this.state.ngrok_url+"/popular-articles";
     axios
       .get(url)
       .then(async (response) => {
@@ -37,11 +38,12 @@ export default class PopularScreen extends Component {
   keyExtractor = (item, index) => index.toString();
 
   renderItems = ({ item, index }) => {
-    return (
-      <View style={styles.cardContainer}>
-        <WebView source={{ uri: item.url }} />
-      </View>
-    );
+      return (
+        <View style={styles.cardContainer}>
+          <Text style={styles.title}>Article name: {"\n\n"+item.title}</Text>
+          <Star score={item.total_events} style={styles.starStyle} />
+        </View>
+      );
   };
 
   render() {
@@ -69,10 +71,14 @@ const styles = StyleSheet.create({
     backgroundColor: "#fff",
   },
   cardContainer: {
+    width: RFValue(280),
+    alignSelf: "center",
+    backgroundColor: "white",
     borderRadius: RFValue(10),
-    height: RFValue(200),
-    marginHorizontal: RFValue(20),
-    marginVertical: RFValue(15),
+    margin: RFValue(10),
+    padding: RFValue(10),
+    borderColor: "#182854",
+    borderWidth: RFValue(2),
   },
   posterImage: {
     flex: 1,
@@ -81,9 +87,9 @@ const styles = StyleSheet.create({
   title: {
     fontSize: RFValue(15),
     fontWeight: "bold",
-    color: "white",
+    color: "#182854",
     fontFamily: "monospace",
-    marginVertical: RFValue(2),
+    marginVertical: RFValue(5),
   },
   subtitle: {
     fontSize: RFValue(10),
@@ -100,5 +106,9 @@ const styles = StyleSheet.create({
     bottom: RFValue(10),
     left: RFValue(10),
     borderRadius: RFValue(10),
+  },
+  starStyle: {
+    width: RFValue(200),
+    height: RFValue(40),
   },
 });

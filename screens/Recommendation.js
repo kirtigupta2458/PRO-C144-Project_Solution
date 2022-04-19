@@ -3,18 +3,19 @@ import {
   View,
   StyleSheet,
   FlatList,
-  ImageBackground,
-  Image,
   Text,
+  ImageBackground
 } from "react-native";
 import axios from "axios";
 import { RFValue } from "react-native-responsive-fontsize";
+import Star from "react-native-star-view";
 
-export default class RecommendedScreen extends Component {
+export default class PopularScreen extends Component {
   constructor(props) {
     super(props);
     this.state = {
       data: [],
+      ngrok_url:""
     };
   }
 
@@ -23,8 +24,7 @@ export default class RecommendedScreen extends Component {
   }
 
   getData = () => {
-    const url =
-      "https://6c2d-2405-201-8008-e095-548b-ab69-a0e4-2179.ngrok.io/recommended-articles";
+    const url = this.state.ngrok_url+"/recommended-articles";
     axios
       .get(url)
       .then(async (response) => {
@@ -38,30 +38,30 @@ export default class RecommendedScreen extends Component {
   keyExtractor = (item, index) => index.toString();
 
   renderItems = ({ item, index }) => {
-    console.log(item)
-    return (
-      <View style={styles.cardContainer}>
-        
-      </View>
-    );
+      return (
+        <View style={styles.cardContainer}>
+          <Text style={styles.title}>Article name: {"\n\n"+item.title}</Text>
+          <Star score={item.total_events} style={styles.starStyle} />
+        </View>
+      );
   };
 
   render() {
     const { data } = this.state;
-      return (
-        <View style={styles.container}>
-          <ImageBackground
-            source={require("../assets/bg.png")}
-            style={{ flex: 1 }}
-          >
-            <FlatList
-              data={data}
-              keyExtractor={this.keyExtractor}
-              renderItem={this.renderItems}
-            />
-          </ImageBackground>
-        </View>
-      );
+    return (
+      <View style={styles.container}>
+        <ImageBackground
+          source={require("../assets/bg.png")}
+          style={{ flex: 1 }}
+        >
+          <FlatList
+            data={data}
+            keyExtractor={this.keyExtractor}
+            renderItem={this.renderItems}
+          />
+        </ImageBackground>
+      </View>
+    );
   }
 }
 
@@ -71,10 +71,14 @@ const styles = StyleSheet.create({
     backgroundColor: "#fff",
   },
   cardContainer: {
+    width: RFValue(280),
+    alignSelf: "center",
+    backgroundColor: "white",
     borderRadius: RFValue(10),
-    height: RFValue(200),
-    marginHorizontal: RFValue(20),
-    marginVertical: RFValue(15),
+    margin: RFValue(10),
+    padding: RFValue(10),
+    borderColor: "#182854",
+    borderWidth: RFValue(2),
   },
   posterImage: {
     flex: 1,
@@ -83,9 +87,9 @@ const styles = StyleSheet.create({
   title: {
     fontSize: RFValue(15),
     fontWeight: "bold",
-    color: "white",
+    color: "#182854",
     fontFamily: "monospace",
-    marginVertical: RFValue(2),
+    marginVertical: RFValue(5),
   },
   subtitle: {
     fontSize: RFValue(10),
@@ -102,5 +106,9 @@ const styles = StyleSheet.create({
     bottom: RFValue(10),
     left: RFValue(10),
     borderRadius: RFValue(10),
+  },
+  starStyle: {
+    width: RFValue(200),
+    height: RFValue(40),
   },
 });

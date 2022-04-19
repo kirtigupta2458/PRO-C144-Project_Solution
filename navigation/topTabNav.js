@@ -1,6 +1,6 @@
 import React from "react";
-import PopularMoviesScreen from "../screens/Popular";
-import RecommendedMoviesScreen from "../screens/Recommendation"
+import PopularScreen from "../screens/Popular";
+import RecommendedScreen from "../screens/Recommendation"
 import { createMaterialTopTabNavigator } from "@react-navigation/material-top-tabs";
 import { RFValue } from "react-native-responsive-fontsize";
 
@@ -11,10 +11,10 @@ export default function TopTabNav() {
     <AppTopNavigation.Navigator  screenOptions={{
       tabBarLabelStyle: { fontSize: RFValue(12) ,color:"white",fontFamily:"monospace"},
       tabBarItemStyle: { borderLeftWidth:1,borderColor:"#3c8ed9" },
-      tabBarStyle: { backgroundColor: '#182854' },
+      tabBarStyle: { backgroundColor: '#3D550C' },
     }}>
-      <AppTopNavigation.Screen name="Popular" component={PopularMoviesScreen} />
-      <AppTopNavigation.Screen name="Recommended" component={RecommendedMoviesScreen} />
+      <AppTopNavigation.Screen name="Popular" component={PopularScreen} />
+      <AppTopNavigation.Screen name="Recommended" component={RecommendedScreen} />
     </AppTopNavigation.Navigator>
   );
 }
