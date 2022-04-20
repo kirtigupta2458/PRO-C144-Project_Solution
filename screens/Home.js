@@ -17,7 +17,7 @@ export default class HomeScreen extends Component {
     super();
     this.state = {
       articleDetails: {},
-      ngrok_url: "",
+      ngrok_url: "https://b3c2-121-241-7-122.ngrok.io",
     };
   }
 
@@ -108,7 +108,19 @@ export default class HomeScreen extends Component {
         </View>
       );
     } else {
-      return <Text>Loading...</Text>;
+      return (
+        <View style={styles.container}>
+          <ImageBackground
+            source={require("../assets/bg.png")}
+            style={{ flex: 1 }}
+          >
+            <View style={styles.headerContainer}>
+              <Text style={styles.headerTitle}>Articles to Read</Text>
+            </View>
+            <Text style={styles.headerTitle}>Loading...</Text>
+          </ImageBackground>
+        </View>
+      );
     }
   }
 }
