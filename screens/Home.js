@@ -17,7 +17,7 @@ export default class HomeScreen extends Component {
     super();
     this.state = {
       articleDetails: {},
-      ngrok_url: "",
+      url: "",
     };
   }
 
@@ -26,40 +26,15 @@ export default class HomeScreen extends Component {
   }
 
   getArticle = () => {
-    const url = this.state.ngrok_url + "/get-article";
-    axios
-      .get(url)
-      .then((response) => {
-        let details = response.data.data;
-        this.setState({ articleDetails: details });
-      })
-      .catch((error) => {
-        console.log(error.message);
-      });
+    
   };
 
   likedArticle = () => {
-    const url = this.state.ngrok_url + "/liked-article";
-    axios
-      .get(url)
-      .then((response) => {
-        this.getArticle();
-      })
-      .catch((error) => {
-        console.log(error.message);
-      });
+   
   };
 
   unlikedArticle = () => {
-    const url = this.state.ngrok_url + "/unliked-article";
-    axios
-      .get(url)
-      .then((response) => {
-        this.getArticle();
-      })
-      .catch((error) => {
-        console.log(error.message);
-      });
+   
   };
 
   render() {
