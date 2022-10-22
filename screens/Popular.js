@@ -15,7 +15,7 @@ export default class PopularScreen extends Component {
     super(props);
     this.state = {
       data: [],
-      ngrok_url:""
+     url:""
     };
   }
 
@@ -24,15 +24,7 @@ export default class PopularScreen extends Component {
   }
 
   getData = () => {
-    const url = this.state.ngrok_url+"/popular-articles";
-    axios
-      .get(url)
-      .then(async (response) => {
-        this.setState({ data: response.data.data });
-      })
-      .catch((error) => {
-        console.log(error.message);
-      });
+   
   };
 
   keyExtractor = (item, index) => index.toString();
